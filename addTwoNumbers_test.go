@@ -70,16 +70,26 @@ func addTwoNumbersWithCarry(l1 *ListNode, l2 *ListNode, carry int) *ListNode {
             return &ListNode{carry, nil}
         }
         return nil
-    } else if l1 == nil {
-        l1 = &ListNode{0, nil}
-    } else if l2 == nil {
-        l2 = &ListNode{0, nil}
     }
 
-    sum := l1.Val + l2.Val + carry
+    val1 := 0
+    var next1 *ListNode = nil
+    if l1 != nil {
+        val1 = l1.Val
+        next1 = l1.Next
+    }
+
+    val2 := 0
+    var next2 *ListNode = nil
+    if l2 != nil {
+        val2 = l2.Val
+        next2 = l2.Next
+    }
+
+    sum := val1 + val2 + carry
     val := sum % 10
     carry = sum / 10
-    return &ListNode{val, addTwoNumbersWithCarry(l1.Next, l2.Next, carry)}
+    return &ListNode{val, addTwoNumbersWithCarry(next1, next2, carry)}
 }
 
 func listNodeEqual(l1 *ListNode, l2 *ListNode) bool {
