@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// Solution to https://leetcode.com/problems/two-sum/
 func TestTwoSum(t *testing.T) {
 	nums := []int{2, 7, 11, 15}
 	target := 9
