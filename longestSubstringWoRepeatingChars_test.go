@@ -50,28 +50,37 @@ func TestLongestSubstringWoRepeatingChars5(t *testing.T) {
 
 func lengthOfLongestSubstring(s string) int {
     maxLen := 0
-    //fmt.Println(s)
-    for i, _ := range(s) {
-        subs := map[int32]bool{}
-        currLen := 0
-        for _, c := range(s[i:]){
-            //fmt.Println(string(c))
-            _, ok := subs[c]
-            if ok {
-                //fmt.Println("seen")
-                if currLen > maxLen {
-                    maxLen = currLen
-                }
-                currLen = 0
-                subs = map[int32]bool{}
+    minIndex := 0
+    maxIndex := 1
+    currLen := 0
+
+    for maxIndex <= len(s) {
+        if uniqueChars(s[minIndex:maxIndex]) {
+            currLen = maxIndex - minIndex
+            maxIndex++
+        } else {
+            if currLen > maxLen {
+                maxLen = currLen
             }
-            subs[c] = true
-            currLen++
+            currLen = 0
+            minIndex++
         }
-        if currLen > maxLen {
-            maxLen = currLen
-        }
+    }
+    if currLen > maxLen {
+        maxLen = currLen
     }
 
     return maxLen
+}
+
+func uniqueChars(s string) bool {
+    subs := map[int32]bool{}
+    for _, c := range(s) {
+        _, seen := subs[c]
+        if seen {
+            return false
+        }
+        subs[c] = true
+    }
+    return true
 }
