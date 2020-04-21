@@ -1,6 +1,7 @@
 package leetcode
 
 import (
+    "strings"
     "testing"
 )
 
@@ -48,15 +49,26 @@ func TestLongestSubstringWoRepeatingChars5(t *testing.T) {
     }
 }
 
+/*
+ * Shoooort string
+ */
+func TestLongestSubstringWoRepeatingChars6(t *testing.T) {
+    result := lengthOfLongestSubstring(" ")
+    expectedResult := 1
+    if result != expectedResult {
+        t.Errorf("Got %d; expected %d", result, expectedResult)
+    }
+}
+
 func lengthOfLongestSubstring(s string) int {
     maxLen := 0
     minIndex := 0
-    maxIndex := 1
+    maxIndex := 0
     currLen := 0
 
-    for maxIndex <= len(s) {
-        if uniqueChars(s[minIndex:maxIndex]) {
-            currLen = maxIndex - minIndex
+    for maxIndex < len(s) {
+        if !strings.Contains(s[minIndex:maxIndex], s[maxIndex:maxIndex+1]) {
+            currLen = maxIndex - minIndex + 1
             maxIndex++
         } else {
             if currLen > maxLen {
@@ -71,16 +83,4 @@ func lengthOfLongestSubstring(s string) int {
     }
 
     return maxLen
-}
-
-func uniqueChars(s string) bool {
-    subs := map[int32]bool{}
-    for _, c := range(s) {
-        _, seen := subs[c]
-        if seen {
-            return false
-        }
-        subs[c] = true
-    }
-    return true
 }
