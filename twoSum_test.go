@@ -11,7 +11,7 @@ func TestTwoSum(t *testing.T) {
     result := twoSum(nums, target)
     expectedResult := []int{0, 1}
 
-    if !equal(result, expectedResult) {
+    if !arraysEqual(result, expectedResult) {
         t.Errorf("Got %v; expected %v", result, expectedResult)
     }
 }
@@ -22,28 +22,30 @@ func TestTwoSum2(t *testing.T) {
     result := twoSum(nums, target)
     expectedResult := []int{1, 2}
 
-    if !equal(result, expectedResult) {
+    if !arraysEqual(result, expectedResult) {
         t.Errorf("Got %v; expected %v", result, expectedResult)
     }
 }
 
 func twoSum(nums []int, target int) []int {
+    // map value -> index
+    var compliments = make(map[int]int)
     for i := 0; i < len(nums); i++ {
-        for j := i + 1; j < len(nums); j++ {
-            if i == j {
-                continue
-            }
-            if nums[i]+nums[j] == target {
-                return []int{i, j}
-            }
+        compliment := target - nums[i]
+
+        _, exists := compliments[compliment]
+        if exists {
+            return []int{compliments[compliment], i}
         }
+
+        compliments[nums[i]] = i
     }
     return nil
 }
 
 // Equal tells whether a and b contain the same elements.
 // A nil argument is equivalent to an empty slice.
-func equal(a, b []int) bool {
+func arraysEqual(a, b []int) bool {
     if len(a) != len(b) {
         return false
     }
