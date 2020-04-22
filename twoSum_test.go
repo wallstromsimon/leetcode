@@ -30,15 +30,15 @@ func TestTwoSum2(t *testing.T) {
 func twoSum(nums []int, target int) []int {
     // map value -> index
     var compliments = make(map[int]int)
-    for i := 0; i < len(nums); i++ {
-        compliment := target - nums[i]
+    for i, v := range nums {
+        compliment := target - v
 
         _, exists := compliments[compliment]
         if exists {
             return []int{compliments[compliment], i}
         }
 
-        compliments[nums[i]] = i
+        compliments[v] = i
     }
     return nil
 }
