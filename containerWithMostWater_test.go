@@ -15,14 +15,22 @@ func TestContainerWithMostWater(t *testing.T) {
 
 func maxArea(height []int) int {
     maxArea := 0
-    for i := 0; i < len(height); i++ {
-        for j := len(height) - 1; j > i; j-- {
-            area := (j - i) *  min(height[i], height[j])
-            if area > maxArea {
-                maxArea = area
-            }
+    left := 0
+    right := len(height) - 1
+
+    for left < right {
+        area := (right - left) *  min(height[left], height[right])
+        if area > maxArea {
+            maxArea = area
+        }
+
+        if height[left] < height[right] {
+            left++
+        } else {
+            right--
         }
     }
+
     return maxArea
 }
 
