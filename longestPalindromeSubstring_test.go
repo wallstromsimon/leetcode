@@ -1,7 +1,6 @@
 package leetcode
 
 import (
-    "strings"
     "testing"
 )
 
@@ -40,10 +39,13 @@ func TestPalindromeLongestSubstring4(t *testing.T) {
 
 func longestPalindrome(s string) string {
     //fmt.Printf("%s len %d\n", s, len(s))
+    var pals = make(map[string]bool)
+
     longest := ""
     for i := 0; i < len(s); i++ {
         for j := i + 1; j <= len(s); j++ {
-            if isPalindrome(s[i:j]) {
+            if isPalindrome(s[i:j], pals) {
+                pals[s[i:j]] = true
                 if len(s[i:j]) > len(longest) {
                     longest = s[i:j]
                 }
@@ -54,39 +56,15 @@ func longestPalindrome(s string) string {
     return longest
 }
 
-func isPalindrome(s string) bool {
-    return s == reverse(s)
-}
-
-func reverse(s string) string {
-    runes := []rune(s)
-    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-        runes[i], runes[j] = runes[j], runes[i]
-    }
-    return string(runes)
-}
-
-func lengthOfLongestSubstring2(s string) int {
-    maxLen := 0
-    minIndex := 0
-    maxIndex := 0
-    currLen := 0
-
-    for maxIndex < len(s) {
-        if !strings.Contains(s[minIndex:maxIndex], s[maxIndex:maxIndex+1]) {
-            currLen = maxIndex - minIndex + 1
-            maxIndex++
-        } else {
-            if currLen > maxLen {
-                maxLen = currLen
-            }
-            currLen = 0
-            minIndex++
-        }
-    }
-    if currLen > maxLen {
-        maxLen = currLen
+func isPalindrome(s string, pals map[string]bool) bool {
+    if len(s) <= 1 {
+        return true
+    } else if pals[s] {
+            return true
+    } else if s[0] == s[len(s) - 1] && isPalindrome(s[1:len(s) - 1], pals) {
+        pals[s] = true
+        return true
     }
 
-    return maxLen
+    return false
 }
